@@ -4,14 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Handlers.CqrsFramework
+namespace CQ.CqrsFramework
 {
-    public interface IRequestHandler<TRequest, TResponse>
+    public interface IQueryHandler<TRequest, TResponse>
     {
         Task<TResponse> HandleAsync(TRequest request);
-    }
-
-    public interface IRequestHandler<TRequest> : IRequestHandler<TRequest, Unit>
-    {
     }
 }

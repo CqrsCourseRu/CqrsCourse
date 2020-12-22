@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ApplicationServices.Implementation\CQ.ApplicationServices.Implementation.csproj" />
     <ProjectReference Include="..\DataAccess.MsSql\CQ.DataAccess.MsSql.csproj" />
+    <ProjectReference Include="..\UseCases\CQ.UseCases.csproj" />
   </ItemGroup>
 
 </Project>
