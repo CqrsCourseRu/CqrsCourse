@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApplicationServices.Interfaces\Handlers.ApplicationServices.Interfaces.csproj" />
     <ProjectReference Include="..\CqrsFramework\Handlers.CqrsFramework.csproj" />
     <ProjectReference Include="..\Infrastructure.Interfaces\Handlers.Infrastructure.Interfaces.csproj" />
   </ItemGroup>

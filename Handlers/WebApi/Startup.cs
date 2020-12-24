@@ -36,7 +36,7 @@ namespace WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
 
-            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IStatisticService, StatisticService>();
 
             services.AddAutoMapper(typeof(OrderMapperProfile));
             services.AddDbContext<IReadOnlyDbContext, ReadOnlyAppDbContext>(builder =>

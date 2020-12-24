@@ -15,16 +15,23 @@ namespace ApplicationServices.Implementation
         private readonly IDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IStatisticService _statisticService;
 
-        public OrderService(IDbContext dbContext, IMapper mapper, ICurrentUserService currentUserService)
+        public OrderService(IDbContext dbContext, 
+            IMapper mapper, 
+            ICurrentUserService currentUserService,
+            IStatisticService statisticService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _currentUserService = currentUserService;
+            _statisticService = statisticService;
         }
 
         public async Task<int> CreateAsync(ChangeOrderDto dto)
         {
+            await _statisticService.WriteStatisticAsync("Order", dto.Items.Select(x => x.ProductId));
+
             var order = _mapper.Map<Order>(dto);
             order.UserEmail = _currentUserService.Email;
             _dbContext.Orders.Add(order);
