@@ -6,31 +6,31 @@ using System.Threading.Tasks;
 using ApplicationServices.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Handlers.CqrsFramework;
 using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Handlers.UseCases.Order.Queries.GetOrderById
+namespace Layers.ApplicationServices.Implementation
 {
-    public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, OrderDto>
+    public class ReadOnlyOrderService : IReadOnlyOrderService
     {
         private readonly IReadOnlyDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public GetOrderByIdQueryHandler(IReadOnlyDbContext dbContext, IMapper mapper)
+        public ReadOnlyOrderService(IReadOnlyDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
-        public async Task<OrderDto> HandleAsync(GetOrderByIdQuery request)
+        public async Task<OrderDto> GetByIdAsync(int id)
         {
             var result = await _dbContext.Orders
-                .Where(x => x.Id == request.Id)
+                .Where(x => x.Id == id)
                 .ProjectTo<OrderDto>(_mapper.ConfigurationProvider)
                 .SingleAsync();
 
             return result;
         }
+
     }
 }

@@ -9,6 +9,7 @@ using ApplicationServices.Interfaces;
 using AutoMapper;
 using DataAccess.MsSql;
 using Infrastructure.Interfaces;
+using Layers.ApplicationServices.Implementation;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Services;
 
@@ -33,9 +34,12 @@ namespace WebApi
             });
 
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IReadOnlyOrderService, ReadOnlyOrderService>();
 
             services.AddAutoMapper(typeof(MapperProfile));
             services.AddDbContext<IDbContext, AppDbContext>(builder =>
+                builder.UseSqlServer(Configuration.GetConnectionString("Database")));
+            services.AddDbContext<IReadOnlyDbContext, ReadOnlyAppDbContext>(builder =>
                 builder.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddScoped<ICurrentUserService, CurrentUserService>();
         }

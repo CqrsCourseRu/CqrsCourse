@@ -39,6 +39,8 @@ namespace WebApi
             services.AddScoped<IOrderService, OrderService>();
 
             services.AddAutoMapper(typeof(OrderMapperProfile));
+            services.AddDbContext<IReadOnlyDbContext, ReadOnlyAppDbContext>(builder =>
+                builder.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddDbContext<IDbContext, AppDbContext>(builder =>
                 builder.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddScoped<ICurrentUserService, CurrentUserService>();

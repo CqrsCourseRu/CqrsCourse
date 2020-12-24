@@ -14,10 +14,10 @@ namespace Handlers.UseCases.Order.Queries.GetOrderById
 {
     public class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery, OrderDto>
     {
-        private readonly IDbContext _dbContext;
+        private readonly IReadOnlyDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public GetOrderByIdQueryHandler(IDbContext dbContext, IMapper mapper)
+        public GetOrderByIdQueryHandler(IReadOnlyDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

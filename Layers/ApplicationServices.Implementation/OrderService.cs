@@ -23,16 +23,6 @@ namespace ApplicationServices.Implementation
             _currentUserService = currentUserService;
         }
 
-        public async Task<OrderDto> GetByIdAsync(int id)
-        {
-            var result = await _dbContext.Orders
-                .Where(x => x.Id == id)
-                .ProjectTo<OrderDto>(_mapper.ConfigurationProvider)
-                .SingleAsync();
-
-            return result;
-        }
-
         public async Task<int> CreateAsync(ChangeOrderDto dto)
         {
             var order = _mapper.Map<Order>(dto);
