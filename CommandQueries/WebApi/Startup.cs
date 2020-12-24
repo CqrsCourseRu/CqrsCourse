@@ -45,9 +45,20 @@ namespace WebApi
                 builder.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-            services.AddScoped<IQueryHandler<GetOrderByIdQuery, OrderDto>, GetOrderByIdQueryHandler>();
-            services.AddScoped<ICommandHandler<CreateOrderCommand>, CreateOrderCommandHandler>();
-            services.AddScoped<ICommandHandler<UpdateOrderCommand>, UpdateOrderCommandHandler>();
+            services.Scan(selector =>
+                selector.FromAssemblyOf<GetOrderByIdQuery>()
+                    .AddClasses(classes => classes.AssignableTo(typeof(IQueryHandler<,>)))
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime()
+            );
+
+            services.Scan(selector =>
+                selector.FromAssemblyOf<UpdateOrderCommand>()
+                    .AddClasses(classes => classes.AssignableTo(typeof(ICommandHandler<>)))
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime()
+            );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
