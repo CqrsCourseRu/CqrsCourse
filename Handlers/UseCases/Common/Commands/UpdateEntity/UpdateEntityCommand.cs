@@ -7,7 +7,9 @@ using Layers.ApplicationServices.Interfaces;
 
 namespace Handlers.UseCases.Order.Commands.UpdateOrder
 {
-    public class UpdateOrderCommand : UpdateEntityCommand<ChangeOrderDto>
+    public abstract class UpdateEntityCommand<TDto>
     {
+        public int Id { get; set; }
+        public TDto Dto { get; set; }
     }
 }

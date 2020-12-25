@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Layers.ApplicationServices.Interfaces;
 
-namespace Handlers.UseCases.Order.Commands.UpdateOrder
+namespace Handlers.UseCases.Order.Commands.CreateOrder
 {
-    public class UpdateOrderCommand : UpdateEntityCommand<ChangeOrderDto>
+    public abstract class CreateEntityCommand<TDto>
     {
+        public TDto Dto { get; set; }
     }
 }

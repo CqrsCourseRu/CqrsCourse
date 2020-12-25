@@ -13,17 +13,10 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class OrdersController : ControllerBase
     {
-        private readonly IRequestHandler<GetOrderByIdQuery, OrderDto> _getOrderByIdHandler;
-
-        public OrdersController(IRequestHandler<GetOrderByIdQuery, OrderDto> getOrderByIdHandler)
-        {
-            _getOrderByIdHandler = getOrderByIdHandler;
-        }
-
         [HttpGet("{id}")]
-        public Task<OrderDto> GetByIdAsync(int id)
+        public Task<OrderDto> GetByIdAsync(int id, [FromServices] IRequestHandler<GetOrderByIdQuery, OrderDto> handler)
         {
-            return _getOrderByIdHandler.HandleAsync(new GetOrderByIdQuery {Id = id});
+            return handler.HandleAsync(new GetOrderByIdQuery {Id = id});
         }
 
         [HttpPost]

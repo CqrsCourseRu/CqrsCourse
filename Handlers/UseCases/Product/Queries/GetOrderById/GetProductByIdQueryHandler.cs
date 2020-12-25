@@ -13,10 +13,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Handlers.UseCases.Order.Queries.GetOrderById
 {
-    public class GetOrderByIdQueryHandler : GetEntityByIdQueryHandler<GetOrderByIdQuery, Entities.Order, OrderDto>
+    public class GetProductByIdQueryHandler : GetEntityByIdQueryHandler<GetProductByIdQuery, Entities.Product, ProductDto>
     {
 
-        public GetOrderByIdQueryHandler(IReadOnlyDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public GetProductByIdQueryHandler(IReadOnlyDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
 
