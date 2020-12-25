@@ -4,6 +4,7 @@ using Handlers.CqrsFramework;
 using Handlers.UseCases.Order.Commands.CreateOrder;
 using Handlers.UseCases.Order.Commands.UpdateOrder;
 using Handlers.UseCases.Order.Queries.GetOrderById;
+using Handlers.UseCases.Product.Commands.DeleteProduct;
 using Layers.ApplicationServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,12 @@ namespace WebApi.Controllers
         public Task UpdateAsync(int id, [FromBody] ChangeProductDto dto, [FromServices]IRequestHandler<UpdateProductCommand> handler)
         {
             return handler.HandleAsync(new UpdateProductCommand { Id = id, Dto = dto});
+        }
+
+        [HttpDelete("{id}")]
+        public Task DeleteAsync(int id, [FromServices]IRequestHandler<DeleteProductCommand> handler)
+        {
+            return handler.HandleAsync(new DeleteProductCommand {Id = id});
         }
 
     }
