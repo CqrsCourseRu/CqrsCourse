@@ -2,7 +2,7 @@
 
 namespace ApplicationServices.Interfaces
 {
-    public class OrderDto : ChangeOrderDto
+    public class ProductDto : ChangeProductDto
     {
         public int Id { get; set; }
     }

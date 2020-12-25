@@ -2,7 +2,7 @@
 
 namespace Handlers.UseCases.Order.Commands.CreateOrder
 {
-    public class CreateOrderCommand : CreateEntityCommand<ChangeOrderDto>
+    public class CreateProductCommand : CreateEntityCommand<ChangeProductDto>
     {
     }
 }

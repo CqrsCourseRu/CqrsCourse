@@ -17,6 +17,7 @@ namespace DataAccess.MsSql
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<T> Set<T>() where T : Entity => base.Set<T>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

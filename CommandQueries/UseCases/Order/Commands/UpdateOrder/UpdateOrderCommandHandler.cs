@@ -1,33 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
-using CQ.CqrsFramework;
 using Infrastructure.Interfaces;
+using Layers.ApplicationServices.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Handlers.UseCases.Order.Commands.UpdateOrder
 {
-    public class UpdateOrderCommandHandler : ICommandHandler<UpdateOrderCommand>
+    public class UpdateOrderCommandHandler : UpdateEntityCommandHandler<UpdateOrderCommand, Entities.Order, ChangeOrderDto>
     {
-        private readonly IDbContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public UpdateOrderCommandHandler(IDbContext dbContext, IMapper mapper)
+        public UpdateOrderCommandHandler(IDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
         }
 
-        public async Task HandleAsync(UpdateOrderCommand request)
+        protected override async Task<Entities.Order> GetTrackedEntityAsync(int id)
         {
-            var order = await _dbContext.Orders
+            var order = await DbContext.Orders
                 .Include(x => x.Items)
-                .SingleAsync(x => x.Id == request.Id);
-            _mapper.Map(request.Dto, order);
-            await _dbContext.SaveChangesAsync();
+                .SingleAsync(x => x.Id == id);
+            return order;
         }
     }
 }

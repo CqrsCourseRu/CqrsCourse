@@ -2,7 +2,7 @@
 
 namespace Handlers.UseCases.Order.Commands.UpdateOrder
 {
-    public class UpdateOrderCommand : UpdateEntityCommand<ChangeOrderDto>
+    public class UpdateProductCommand : UpdateEntityCommand<ChangeProductDto>
     {
     }
 }
