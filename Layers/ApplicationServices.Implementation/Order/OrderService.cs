@@ -10,42 +10,38 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationServices.Implementation
 {
-    public class OrderService : IOrderService
+    public class OrderService : EntityService<Order, ChangeOrderDto>, IOrderService
     {
-        private readonly IDbContext _dbContext;
-        private readonly IMapper _mapper;
         private readonly ICurrentUserService _currentUserService;
         private readonly IStatisticService _statisticService;
 
         public OrderService(IDbContext dbContext, 
             IMapper mapper, 
             ICurrentUserService currentUserService,
-            IStatisticService statisticService)
+            IStatisticService statisticService) : base(dbContext, mapper)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
             _currentUserService = currentUserService;
             _statisticService = statisticService;
         }
 
-        public async Task<int> CreateAsync(ChangeOrderDto dto)
+        protected override void InitializeNewEntity(Order entity)
+        {
+            entity.UserEmail = _currentUserService.Email;
+        }
+
+        public override async Task<int> CreateAsync(ChangeOrderDto dto)
         {
             await _statisticService.WriteStatisticAsync("Order", dto.Items.Select(x => x.ProductId));
 
-            var order = _mapper.Map<Order>(dto);
-            order.UserEmail = _currentUserService.Email;
-            _dbContext.Orders.Add(order);
-            await _dbContext.SaveChangesAsync();
-            return order.Id;
+            return await base.CreateAsync(dto);
         }
 
-        public async Task UpdateAsync(int id, ChangeOrderDto dto)
+        protected override async Task<Order> GetTrackedEntityAsync(int id)
         {
-            var order = await _dbContext.Orders
+            var order = await DbContext.Orders
                 .Include(x => x.Items)
                 .SingleAsync(x => x.Id == id);
-            _mapper.Map(dto, order);
-            await _dbContext.SaveChangesAsync();
+            return order;
         }
     }
 }

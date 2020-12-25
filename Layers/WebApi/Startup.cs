@@ -11,6 +11,7 @@ using DataAccess.MsSql;
 using Infrastructure.Interfaces;
 using Layers.ApplicationServices.Implementation;
 using Layers.ApplicationServices.Interfaces;
+using Layers.ApplicationServices.Interfaces.Product;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Services;
 
@@ -36,6 +37,9 @@ namespace WebApi
 
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IReadOnlyOrderService, ReadOnlyOrderService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IReadOnlyProductService, ReadOnlyProductService>();
+
             services.AddScoped<IStatisticService, StatisticService>();
 
             services.AddAutoMapper(typeof(MapperProfile));

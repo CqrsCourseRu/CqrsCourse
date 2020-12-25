@@ -2,6 +2,7 @@
 using AutoMapper;
 using Entities;
 using Layers.ApplicationServices.Interfaces;
+using Layers.ApplicationServices.Interfaces.Product;
 
 namespace ApplicationServices.Implementation
 {
@@ -12,6 +13,10 @@ namespace ApplicationServices.Implementation
             CreateMap<Order, OrderDto>();
             CreateMap<OrderItem, OrderItemDto>().ReverseMap();
             CreateMap<ChangeOrderDto, Order>();
+
+
+            CreateMap<Product, ProductDto>();
+            CreateMap<ChangeProductDto, Product>();
         }
     }
 }
