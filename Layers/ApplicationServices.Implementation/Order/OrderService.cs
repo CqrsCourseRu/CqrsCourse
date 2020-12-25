@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using ApplicationServices.Interfaces;
 using AutoMapper;
@@ -42,6 +43,11 @@ namespace ApplicationServices.Implementation
                 .Include(x => x.Items)
                 .SingleAsync(x => x.Id == id);
             return order;
+        }
+
+        public override Task DeleteAsync(int id)
+        {
+            throw new NotSupportedException();
         }
     }
 }

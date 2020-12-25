@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ApplicationServices.Implementation
 {
     public abstract class EntityService<TEntity, TDto> : IEntityService<TDto>
-        where TEntity : Entity
+        where TEntity : Entity, new()
     {
         protected readonly IDbContext DbContext;
         private readonly IMapper _mapper;
@@ -39,6 +39,12 @@ namespace ApplicationServices.Implementation
         {
             var entity = await GetTrackedEntityAsync(id);
             _mapper.Map(dto, entity);
+            await DbContext.SaveChangesAsync();
+        }
+
+        public virtual async Task DeleteAsync(int id)
+        {
+            DbContext.Set<TEntity>().Remove(new TEntity {Id = id});
             await DbContext.SaveChangesAsync();
         }
 

@@ -7,5 +7,7 @@ namespace ApplicationServices.Interfaces
     {
         Task<int> CreateAsync(TDto dto);
         Task UpdateAsync(int id, TDto dto);
+
+        Task DeleteAsync(int id);
     }
 }

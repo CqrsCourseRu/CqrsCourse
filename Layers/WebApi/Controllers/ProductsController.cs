@@ -38,5 +38,11 @@ namespace WebApi.Controllers
             return _productService.UpdateAsync(id, dto);
         }
 
+        [HttpDelete("{id}")]
+        public Task DeleteAsync(int id)
+        {
+            return _productService.DeleteAsync(id);
+        }
+
     }
 }
