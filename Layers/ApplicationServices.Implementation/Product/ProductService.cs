@@ -16,6 +16,17 @@ namespace ApplicationServices.Implementation
         public ProductService(IDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
-        
+
+        public async Task DeleteAllAsync(DeleteAllDto dto)
+        {
+            using (var transaction = DbContext.BeginTransaction())
+            {
+                var tasks = dto.Ids.Select(DeleteAsync);
+                
+                await Task.WhenAll(tasks);
+
+                await transaction.CommitAsync();
+            }
+        }
     }
 }
