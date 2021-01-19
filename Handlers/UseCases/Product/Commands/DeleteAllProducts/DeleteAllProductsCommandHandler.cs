@@ -25,13 +25,11 @@ namespace Handlers.UseCases.Product.Commands.DeleteAllProducts
         {
             using (var transaction = _dbContext.BeginTransaction())
             {
-                var tasks = request.Dto.Ids.Select(x =>
+                foreach (var id in request.Dto.Ids)
                 {
-                    var command  = new DeleteProductCommand {Id = x};
-                    return _handlerDispatcher.SendAsync<DeleteProductCommand, Task>(command);
-                });
-
-                await Task.WhenAll(tasks);
+                    var command = new DeleteProductCommand { Id = id };
+                    await _handlerDispatcher.SendAsync(command);
+                }
 
                 await transaction.CommitAsync();
             }    

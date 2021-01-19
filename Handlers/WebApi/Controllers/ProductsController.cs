@@ -40,7 +40,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete]
-        public Task DeleteAllAsync(DeleteAllDto dto, [FromServices] IRequestHandler<DeleteAllProductsCommand> handler)
+        public Task DeleteAllAsync([FromBody]DeleteAllDto dto, [FromServices] IRequestHandler<DeleteAllProductsCommand> handler)
         {
             return handler.HandleAsync(new DeleteAllProductsCommand {Dto = dto});
         }

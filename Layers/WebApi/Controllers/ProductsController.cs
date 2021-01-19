@@ -45,7 +45,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete]
-        public Task DeleteAllAsync(DeleteAllDto dto)
+        public Task DeleteAllAsync([FromBody] DeleteAllDto dto)
         {
             return _productService.DeleteAllAsync(dto);
         }

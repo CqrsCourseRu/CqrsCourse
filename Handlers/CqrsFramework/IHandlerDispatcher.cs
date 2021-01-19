@@ -7,6 +7,6 @@ namespace Handlers.CqrsFramework
 {
     public interface IHandlerDispatcher
     {
-        Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request);
+        Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request);
     }
 }

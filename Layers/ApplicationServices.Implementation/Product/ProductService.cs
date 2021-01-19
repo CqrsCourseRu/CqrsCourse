@@ -21,9 +21,10 @@ namespace ApplicationServices.Implementation
         {
             using (var transaction = DbContext.BeginTransaction())
             {
-                var tasks = dto.Ids.Select(DeleteAsync);
-                
-                await Task.WhenAll(tasks);
+                foreach (var id in dto.Ids)
+                {
+                    await DeleteAsync(id);
+                }
 
                 await transaction.CommitAsync();
             }
