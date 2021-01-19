@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ApplicationServices.Interfaces;
 using CQ.CqrsFramework;
+using CQ.UseCases.Product.Commands.DeleteAllProducts;
 using Handlers.UseCases.Order.Commands.CreateOrder;
 using Handlers.UseCases.Order.Commands.UpdateOrder;
 using Handlers.UseCases.Order.Queries.GetOrderById;
@@ -38,6 +39,12 @@ namespace WebApi.Controllers
         public Task DeleteAsync(int id, [FromServices] ICommandHandler<DeleteProductCommand> handler)
         {
             return handler.HandleAsync(new DeleteProductCommand { Id = id });
+        }
+
+        [HttpDelete]
+        public Task DeleteAllAsync([FromBody] DeleteAllDto dto, [FromServices] ICommandHandler<DeleteAllProductsCommand> handler)
+        {
+            return handler.HandleAsync(new DeleteAllProductsCommand { Dto = dto });
         }
 
     }

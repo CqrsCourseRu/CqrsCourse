@@ -44,6 +44,8 @@ namespace WebApi
             services.AddDbContext<IDbContext, AppDbContext>(builder =>
                 builder.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<ICommandDispatcher, CommandDispatcher>();
+            services.AddScoped<IQueryDispatcher, QueryDispatcher>();
 
             services.Scan(selector =>
                 selector.FromAssemblyOf<GetOrderByIdQuery>()

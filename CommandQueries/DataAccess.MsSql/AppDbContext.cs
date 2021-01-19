@@ -1,6 +1,7 @@
 ﻿using Entities;
 using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DataAccess.MsSql
 {
@@ -10,6 +11,11 @@ namespace DataAccess.MsSql
         {
             ChangeTracker.AutoDetectChangesEnabled = true;
         }
-        
+
+        public IDbContextTransaction BeginTransaction()
+        {
+            return Database.BeginTransaction();
+        }
+
     }
 }
