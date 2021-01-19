@@ -12,13 +12,13 @@ namespace Handlers.UseCases.Product.Commands.DeleteAllProducts
 {
     public class DeleteAllProductsCommandHandler : RequestHandler<DeleteAllProductsCommand>
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly IDbContext _dbContext;
+        private readonly IHandlerDispatcher _handlerDispatcher;
 
-        public DeleteAllProductsCommandHandler(IServiceProvider serviceProvider, IDbContext dbContext)
+        public DeleteAllProductsCommandHandler(IDbContext dbContext, IHandlerDispatcher handlerDispatcher)
         {
-            _serviceProvider = serviceProvider;
             _dbContext = dbContext;
+            _handlerDispatcher = handlerDispatcher;
         }
 
         protected override async Task HandleAsync(DeleteAllProductsCommand request)
@@ -27,8 +27,8 @@ namespace Handlers.UseCases.Product.Commands.DeleteAllProducts
             {
                 var tasks = request.Dto.Ids.Select(x =>
                 {
-                    var deleteHandler = _serviceProvider.GetRequiredService<IRequestHandler<DeleteProductCommand>>();
-                    return deleteHandler.HandleAsync(new DeleteProductCommand {Id = x});
+                    var command  = new DeleteProductCommand {Id = x};
+                    return _handlerDispatcher.SendAsync<DeleteProductCommand, Task>(command);
                 });
 
                 await Task.WhenAll(tasks);
