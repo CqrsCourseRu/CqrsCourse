@@ -15,18 +15,18 @@ namespace Layers.ApplicationServices.Implementation
     public abstract class ReadOnlyEntityService<TEntity, TDto> : IReadOnlyEntityService<TDto>
         where TEntity : Entity
     {
-        private readonly IReadOnlyDbContext _dbContext;
+        protected readonly IReadOnlyDbContext DbContext;
         private readonly IMapper _mapper;
 
         protected ReadOnlyEntityService(IReadOnlyDbContext dbContext, IMapper mapper)
         {
-            _dbContext = dbContext;
+            DbContext = dbContext;
             _mapper = mapper;
         }
 
-        public async Task<TDto> GetByIdAsync(int id)
+        public virtual async Task<TDto> GetByIdAsync(int id)
         {
-            var result = await _dbContext.Set<TEntity>()
+            var result = await DbContext.Set<TEntity>()
                 .Where(x => x.Id == id)
                 .ProjectTo<TDto>(_mapper.ConfigurationProvider)
                 .SingleAsync();
