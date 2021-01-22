@@ -7,9 +7,11 @@ using Microsoft.OpenApi.Models;
 using ApplicationServices.Implementation;
 using ApplicationServices.Interfaces;
 using AutoMapper;
+using Castle.DynamicProxy;
 using DataAccess.MsSql;
 using Infrastructure.Interfaces;
 using Layers.ApplicationServices.Implementation;
+using Layers.ApplicationServices.Implementation.Order;
 using Layers.ApplicationServices.Interfaces;
 using Layers.ApplicationServices.Interfaces.Product;
 using Microsoft.EntityFrameworkCore;
@@ -35,8 +37,31 @@ namespace WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
 
+            //services.AddScoped<IOrderService>(serviceProvider =>
+            //{
+            //    var service = serviceProvider.GetRequiredService<OrderService>();
+            //    var interceptor = serviceProvider.GetRequiredService<CheckOrderAsyncInterceptor>();
+            //    var proxyGenerator = new ProxyGenerator();
+            //    var proxy =
+            //        proxyGenerator.CreateInterfaceProxyWithTargetInterface<IOrderService>(service, interceptor);
+            //    return proxy;
+            //} );
+            //services.AddScoped<OrderService>();
+            //services.AddScoped<ReadOnlyOrderService>();
+            //services.AddScoped<CheckOrderAsyncInterceptor>();
+            //services.AddScoped<IReadOnlyOrderService>(serviceProvider =>
+            //{
+            //    var service = serviceProvider.GetRequiredService<ReadOnlyOrderService>();
+            //    var interceptor = serviceProvider.GetRequiredService<CheckOrderAsyncInterceptor>();
+            //    var proxyGenerator = new ProxyGenerator();
+            //    var proxy =
+            //        proxyGenerator.CreateInterfaceProxyWithTargetInterface<IReadOnlyOrderService>(service, interceptor);
+            //    return proxy;
+            //});
+
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IReadOnlyOrderService, ReadOnlyOrderService>();
+
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IReadOnlyProductService, ReadOnlyProductService>();
 

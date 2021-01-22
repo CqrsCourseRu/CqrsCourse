@@ -6,6 +6,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Entities;
 using Infrastructure.Interfaces;
+using Layers.ApplicationServices.Implementation.Order;
 using Layers.ApplicationServices.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,12 +31,9 @@ namespace ApplicationServices.Implementation
             entity.UserEmail = _currentUserService.Email;
         }
 
+        [CheckOrder]
         public override async Task UpdateAsync(int id, ChangeOrderDto dto)
         {
-            var count = await DbContext.Orders.CountAsync(
-                x => x.UserEmail == _currentUserService.Email && x.Id == id);
-            if (count != 1) throw new Exception("Order not found");
-
             await base.UpdateAsync(id, dto);
         }
 

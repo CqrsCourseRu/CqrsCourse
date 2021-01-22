@@ -8,26 +8,21 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Entities;
 using Infrastructure.Interfaces;
+using Layers.ApplicationServices.Implementation.Order;
 using Microsoft.EntityFrameworkCore;
 
 namespace Layers.ApplicationServices.Implementation
 {
-    public class ReadOnlyOrderService : ReadOnlyEntityService<Order, OrderDto>, IReadOnlyOrderService
+    public class ReadOnlyOrderService : ReadOnlyEntityService<Entities.Order, OrderDto>, IReadOnlyOrderService
     {
-        private readonly ICurrentUserService _currentUserService;
-
-        public ReadOnlyOrderService(IReadOnlyDbContext dbContext, IMapper mapper, ICurrentUserService currentUserService) 
+        public ReadOnlyOrderService(IReadOnlyDbContext dbContext, IMapper mapper) 
             : base(dbContext, mapper)
         {
-            _currentUserService = currentUserService;
         }
 
+        [CheckOrder]
         public override async Task<OrderDto> GetByIdAsync(int id)
         {
-            var count = await DbContext.Orders.CountAsync(
-                x => x.UserEmail == _currentUserService.Email && x.Id == id);
-            if (count != 1) throw new Exception("Order not found");
-
             return await base.GetByIdAsync(id);
         }
     }
