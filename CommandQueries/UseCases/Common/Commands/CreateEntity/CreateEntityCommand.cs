@@ -1,6 +1,8 @@
-﻿namespace Handlers.UseCases.Order.Commands.CreateOrder
+﻿using CQ.CqrsFramework;
+
+namespace Handlers.UseCases.Order.Commands.CreateOrder
 {
-    public abstract class CreateEntityCommand<TDto>
+    public abstract class CreateEntityCommand<TDto> : ICommand
     {
         public TDto Dto { get; set; }
 

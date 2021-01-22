@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,7 +17,13 @@ namespace CQ.CqrsFramework
         public Task SendAsync<TCommand>(TCommand command) where TCommand : ICommand
         {
             var handler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand>>();
-            return handler.HandleAsync(command);
+
+            var middlewares = _serviceProvider.GetServices<ICommandMiddleware<TCommand>>();
+            CommandHandlerDelegate handlerDelegate = () => handler.HandleAsync(command);
+            var resultDelegate = middlewares.Aggregate(handlerDelegate,
+                (next, middleware) => () => middleware.HandleAsync(command, next));
+
+            return resultDelegate();
         }
     }
 }

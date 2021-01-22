@@ -15,36 +15,45 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
-        [HttpGet("{id}")]
-        public Task<ProductDto> GetByIdAsync(int id, [FromServices]IQueryHandler<GetProductByIdQuery, ProductDto> handler)
+        private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IQueryDispatcher _queryDispatcher;
+
+        public ProductsController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
-            return handler.HandleAsync(new GetProductByIdQuery { Id = id});
+            _commandDispatcher = commandDispatcher;
+            _queryDispatcher = queryDispatcher;
+        }
+
+        [HttpGet("{id}")]
+        public Task<ProductDto> GetByIdAsync(int id)
+        {
+            return _queryDispatcher.SendAsync(new GetProductByIdQuery { Id = id});
         }
 
         [HttpPost]
-        public async Task<int> CreateAsync([FromBody] ChangeProductDto dto, [FromServices] ICommandHandler<CreateProductCommand> handler)
+        public async Task<int> CreateAsync([FromBody] ChangeProductDto dto)
         {
             var command = new CreateProductCommand {Dto = dto};
-            await handler.HandleAsync(command);
+            await _commandDispatcher.SendAsync(command);
             return command.Id;
         }
 
         [HttpPut("{id}")]
-        public Task UpdateAsync(int id, [FromBody] ChangeProductDto dto, [FromServices] ICommandHandler<UpdateProductCommand> handler)
+        public Task UpdateAsync(int id, [FromBody] ChangeProductDto dto)
         {
-            return handler.HandleAsync(new UpdateProductCommand { Id = id, Dto = dto});
+            return _commandDispatcher.SendAsync(new UpdateProductCommand { Id = id, Dto = dto});
         }
 
         [HttpDelete("{id}")]
-        public Task DeleteAsync(int id, [FromServices] ICommandHandler<DeleteProductCommand> handler)
+        public Task DeleteAsync(int id)
         {
-            return handler.HandleAsync(new DeleteProductCommand { Id = id });
+            return _commandDispatcher.SendAsync(new DeleteProductCommand { Id = id });
         }
 
         [HttpDelete]
-        public Task DeleteAllAsync([FromBody] DeleteAllDto dto, [FromServices] ICommandHandler<DeleteAllProductsCommand> handler)
+        public Task DeleteAllAsync([FromBody] DeleteAllDto dto)
         {
-            return handler.HandleAsync(new DeleteAllProductsCommand { Dto = dto });
+            return _commandDispatcher.SendAsync(new DeleteAllProductsCommand { Dto = dto });
         }
 
     }

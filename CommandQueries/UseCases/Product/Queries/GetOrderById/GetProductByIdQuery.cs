@@ -1,8 +1,9 @@
-﻿using Handlers.UseCases.Common.Queries.GetEntityById;
+﻿using ApplicationServices.Interfaces;
+using Handlers.UseCases.Common.Queries.GetEntityById;
 
 namespace Handlers.UseCases.Order.Queries.GetOrderById
 {
-    public class GetProductByIdQuery : GetEntityByIdQuery
+    public class GetProductByIdQuery : GetEntityByIdQuery<ProductDto>
     {
     }
 }

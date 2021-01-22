@@ -13,25 +13,34 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class OrdersController : ControllerBase
     {
-        [HttpGet("{id}")]
-        public Task<OrderDto> GetByIdAsync(int id, [FromServices] IQueryHandler<GetOrderByIdQuery, OrderDto> handler)
+        private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IQueryDispatcher _queryDispatcher;
+
+        public OrdersController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
-            return handler.HandleAsync(new GetOrderByIdQuery { Id = id });
+            _commandDispatcher = commandDispatcher;
+            _queryDispatcher = queryDispatcher;
+        }
+
+        [HttpGet("{id}")]
+        public Task<OrderDto> GetByIdAsync(int id)
+        {
+            return _queryDispatcher.SendAsync(new GetOrderByIdQuery { Id = id });
         }
 
         [HttpPost]
-        public async Task<int> CreateAsync([FromBody] ChangeOrderDto dto, [FromServices] ICommandHandler<CreateOrderCommand> handler)
+        public async Task<int> CreateAsync([FromBody] ChangeOrderDto dto)
         {
             var command = new CreateOrderCommand {Dto = dto};
-            await handler.HandleAsync(command);
+            await _commandDispatcher.SendAsync(command);
 
             return command.Id;
         }
 
         [HttpPut("{id}")]
-        public Task UpdateAsync(int id, [FromBody] ChangeOrderDto dto, [FromServices] ICommandHandler<UpdateOrderCommand> handler)
+        public Task UpdateAsync(int id, [FromBody] ChangeOrderDto dto)
         {
-            return handler.HandleAsync(new UpdateOrderCommand { Id = id, Dto = dto });
+            return _commandDispatcher.SendAsync(new UpdateOrderCommand { Id = id, Dto = dto });
         }
     }
 }

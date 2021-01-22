@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using CQ.UseCases.Order;
 using Infrastructure.Interfaces;
 using Layers.ApplicationServices.Interfaces;
 using Microsoft.EntityFrameworkCore;

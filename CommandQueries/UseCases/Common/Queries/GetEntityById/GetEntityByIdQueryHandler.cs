@@ -11,7 +11,7 @@ namespace Handlers.UseCases.Common.Queries.GetEntityById
 {
     public abstract class GetEntityByIdQueryHandler<TRequest, TEntity, TDto> : IQueryHandler<TRequest, TDto>
         where TEntity : Entity
-        where TRequest : GetEntityByIdQuery
+        where TRequest : GetEntityByIdQuery<TDto>
     {
         private readonly IReadOnlyDbContext _dbContext;
         private readonly IMapper _mapper;

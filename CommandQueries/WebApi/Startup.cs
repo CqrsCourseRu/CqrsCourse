@@ -8,6 +8,7 @@ using ApplicationServices.Implementation;
 using ApplicationServices.Interfaces;
 using AutoMapper;
 using CQ.CqrsFramework;
+using CQ.UseCases.Order;
 using DataAccess.MsSql;
 using Handlers.UseCases.Order.Commands.CreateOrder;
 using Handlers.UseCases.Order.Commands.UpdateOrder;
@@ -46,6 +47,9 @@ namespace WebApi
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();
             services.AddScoped<IQueryDispatcher, QueryDispatcher>();
+
+            services.AddScoped(typeof(IQueryMiddleware<,>), typeof(CheckOrderMiddleware<,>));
+            services.AddScoped(typeof(ICommandMiddleware<>), typeof(CheckOrderCommandMiddleware<>));
 
             services.Scan(selector =>
                 selector.FromAssemblyOf<GetOrderByIdQuery>()
