@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,9 +23,15 @@ namespace Handlers.CqrsFramework
         }
 
         protected Task<TResponse> HandleAsync<TRequest, TResponse>(TRequest request)
+            where TRequest : IRequest<TResponse>
         {
             var handler = _serviceProvider.GetRequiredService<IRequestHandler<TRequest, TResponse>>();
-            return handler.HandleAsync(request);
+
+            var middlewares = _serviceProvider.GetServices<IMiddleware<TRequest, TResponse>>();
+            HandlerDelegate<TResponse> handlerDelegate = () => handler.HandleAsync(request);
+            var resultDelegate = middlewares.Aggregate(handlerDelegate, (next, middleware) => () => middleware.HandleAsync(request, next));
+
+            return resultDelegate();
         }
     }
 }

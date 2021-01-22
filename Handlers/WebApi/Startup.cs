@@ -9,6 +9,7 @@ using ApplicationServices.Interfaces;
 using AutoMapper;
 using DataAccess.MsSql;
 using Handlers.CqrsFramework;
+using Handlers.UseCases.Order;
 using Handlers.UseCases.Order.Commands.CreateOrder;
 using Handlers.UseCases.Order.Commands.UpdateOrder;
 using Handlers.UseCases.Order.Queries.GetOrderById;
@@ -45,6 +46,7 @@ namespace WebApi
                 builder.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IHandlerDispatcher, HandlerDispatcher>();
+            services.AddScoped(typeof(IMiddleware<,>), typeof(CheckOrderMiddleware<,>));
 
             services.Scan(selector =>
                 selector.FromAssemblyOf<GetOrderByIdQuery>()

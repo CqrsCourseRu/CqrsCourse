@@ -15,34 +15,41 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
-        [HttpGet("{id}")]
-        public Task<ProductDto> GetByIdAsync(int id, [FromServices]IRequestHandler<GetProductByIdQuery, ProductDto> handler)
+        private readonly IHandlerDispatcher _handlerDispatcher;
+
+        public ProductsController(IHandlerDispatcher handlerDispatcher)
         {
-            return handler.HandleAsync(new GetProductByIdQuery { Id = id});
+            _handlerDispatcher = handlerDispatcher;
+        }
+
+        [HttpGet("{id}")]
+        public Task<ProductDto> GetByIdAsync(int id)
+        {
+            return _handlerDispatcher.SendAsync(new GetProductByIdQuery { Id = id});
         }
 
         [HttpPost]
-        public Task<int> CreateAsync([FromBody] ChangeProductDto dto, [FromServices] IRequestHandler<CreateProductCommand, int> handler)
+        public Task<int> CreateAsync([FromBody] ChangeProductDto dto)
         {
-            return handler.HandleAsync(new CreateProductCommand { Dto = dto});
+            return _handlerDispatcher.SendAsync(new CreateProductCommand { Dto = dto});
         }
 
         [HttpPut("{id}")]
-        public Task UpdateAsync(int id, [FromBody] ChangeProductDto dto, [FromServices]IRequestHandler<UpdateProductCommand> handler)
+        public Task UpdateAsync(int id, [FromBody] ChangeProductDto dto)
         {
-            return handler.HandleAsync(new UpdateProductCommand { Id = id, Dto = dto});
+            return _handlerDispatcher.SendAsync(new UpdateProductCommand { Id = id, Dto = dto});
         }
 
         [HttpDelete("{id}")]
-        public Task DeleteAsync(int id, [FromServices]IRequestHandler<DeleteProductCommand> handler)
+        public Task DeleteAsync(int id)
         {
-            return handler.HandleAsync(new DeleteProductCommand {Id = id});
+            return _handlerDispatcher.SendAsync(new DeleteProductCommand {Id = id});
         }
 
         [HttpDelete]
-        public Task DeleteAllAsync([FromBody]DeleteAllDto dto, [FromServices] IRequestHandler<DeleteAllProductsCommand> handler)
+        public Task DeleteAllAsync([FromBody]DeleteAllDto dto)
         {
-            return handler.HandleAsync(new DeleteAllProductsCommand {Dto = dto});
+            return _handlerDispatcher.SendAsync(new DeleteAllProductsCommand {Dto = dto});
         }
 
     }
