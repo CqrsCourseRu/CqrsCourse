@@ -61,7 +61,9 @@ namespace WebApi
             //});
 
             services.AddScoped<IOrderService, OrderService>();
+            //services.Decorate<IOrderService, OrderServiceDecorator>();
             services.AddScoped<IReadOnlyOrderService, ReadOnlyOrderService>();
+            //services.Decorate<IReadOnlyOrderService, ReadOnlyOrderServiceDecorator>();
 
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IReadOnlyProductService, ReadOnlyProductService>();
