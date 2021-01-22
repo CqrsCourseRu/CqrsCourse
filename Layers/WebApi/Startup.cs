@@ -14,6 +14,7 @@ using Layers.ApplicationServices.Implementation;
 using Layers.ApplicationServices.Implementation.Order;
 using Layers.ApplicationServices.Interfaces;
 using Layers.ApplicationServices.Interfaces.Product;
+using Layers.WebApi;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Services;
 
@@ -73,6 +74,7 @@ namespace WebApi
             services.AddDbContext<IReadOnlyDbContext, ReadOnlyAppDbContext>(builder =>
                 builder.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<CheckOrderFilterAttribute>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationServices.Interfaces;
 using Layers.ApplicationServices.Interfaces;
+using Layers.WebApi;
 
 namespace WebApi.Controllers
 {
@@ -20,6 +21,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [CheckOrderFilter]
         public Task<OrderDto> GetByIdAsync(int id)
         {
             return _readOnlyOrderService.GetByIdAsync(id);
@@ -32,6 +34,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [CheckOrderFilter]
         public Task UpdateAsync(int id, [FromBody] ChangeOrderDto dto)
         {
             return _orderService.UpdateAsync(id, dto);
