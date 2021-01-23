@@ -19,6 +19,27 @@ using WebApi.Services;
 
 namespace WebApi
 {
+    public class DIHelper
+    {
+        public static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddScoped<IStatisticService, StatisticService>();
+
+            services.AddAutoMapper(typeof(OrderMapperProfile));
+
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IHandlerDispatcher, HandlerDispatcher>();
+            services.AddScoped(typeof(IMiddleware<,>), typeof(CheckOrderMiddleware<,>));
+
+            services.Scan(selector =>
+                selector.FromAssemblyOf<GetOrderByIdQuery>()
+                    .AddClasses(classes => classes.AssignableTo(typeof(IRequestHandler<,>)))
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime()
+            );
+        }
+    }
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -37,24 +58,12 @@ namespace WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
 
-            services.AddScoped<IStatisticService, StatisticService>();
-
-            services.AddAutoMapper(typeof(OrderMapperProfile));
             services.AddDbContext<IReadOnlyDbContext, ReadOnlyAppDbContext>(builder =>
                 builder.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddDbContext<IDbContext, AppDbContext>(builder =>
                 builder.UseSqlServer(Configuration.GetConnectionString("Database")));
-            services.AddScoped<ICurrentUserService, CurrentUserService>();
-            services.AddScoped<IHandlerDispatcher, HandlerDispatcher>();
-            services.AddScoped(typeof(IMiddleware<,>), typeof(CheckOrderMiddleware<,>));
 
-            services.Scan(selector =>
-                selector.FromAssemblyOf<GetOrderByIdQuery>()
-                    .AddClasses(classes => classes.AssignableTo(typeof(IRequestHandler<,>)))
-                    .AsImplementedInterfaces()
-                    .WithScopedLifetime()
-            );
-
+            DIHelper.ConfigureServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
