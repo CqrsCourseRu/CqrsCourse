@@ -9,10 +9,12 @@ using ApplicationServices.Interfaces;
 using AutoMapper;
 using DataAccess.MsSql;
 using Handlers.CqrsFramework;
+using Handlers.UseCases;
 using Handlers.UseCases.Order;
 using Handlers.UseCases.Order.Commands.CreateOrder;
 using Handlers.UseCases.Order.Commands.UpdateOrder;
 using Handlers.UseCases.Order.Queries.GetOrderById;
+using Handlers.UseCases.Order.Queries.GetOrderResultById;
 using Handlers.WebApi;
 using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +32,7 @@ namespace WebApi
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IHandlerDispatcher, HandlerDispatcher>();
+            services.AddScoped<IMiddleware<GetOrderResultByIdQuery, Result<OrderDto>>, CheckOrderResultMiddleware<GetOrderResultByIdQuery, OrderDto>>();
             services.AddScoped(typeof(IMiddleware<,>), typeof(CheckOrderMiddleware<,>));
 
             services.Scan(selector =>
