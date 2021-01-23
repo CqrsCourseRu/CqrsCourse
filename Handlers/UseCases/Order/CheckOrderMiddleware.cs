@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Handlers.ApplicationServices.Interfaces.Exceptions;
 using Handlers.CqrsFramework;
 using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ namespace Handlers.UseCases.Order
         {
             var count = await _dbContext.Orders.CountAsync(
                 x => x.UserEmail == _currentUserService.Email && x.Id == request.Id);
-            if (count != 1) throw new Exception("Order not found");
+            if (count != 1) throw new NotFoundException();
 
             return await next();
         }

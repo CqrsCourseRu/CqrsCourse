@@ -13,6 +13,7 @@ using Handlers.UseCases.Order;
 using Handlers.UseCases.Order.Commands.CreateOrder;
 using Handlers.UseCases.Order.Commands.UpdateOrder;
 using Handlers.UseCases.Order.Queries.GetOrderById;
+using Handlers.WebApi;
 using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Services;
@@ -75,6 +76,8 @@ namespace WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             }
+
+            app.UseExceptionMiddleware();
 
             app.UseHttpsRedirection();
 
