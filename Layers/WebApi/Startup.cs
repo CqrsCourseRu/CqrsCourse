@@ -22,8 +22,11 @@ namespace WebApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _environment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
+            _environment = environment;
             Configuration = configuration;
         }
 
@@ -71,10 +74,21 @@ namespace WebApi
             services.AddScoped<IStatisticService, StatisticService>();
 
             services.AddAutoMapper(typeof(MapperProfile));
-            services.AddDbContext<IDbContext, AppDbContext>(builder =>
-                builder.UseSqlServer(Configuration.GetConnectionString("Database")));
-            services.AddDbContext<IReadOnlyDbContext, ReadOnlyAppDbContext>(builder =>
-                builder.UseSqlServer(Configuration.GetConnectionString("Database")));
+            if (_environment.IsEnvironment("Testing"))
+            {
+                services.AddDbContext<IDbContext, AppDbContext>(builder =>
+                    builder.UseInMemoryDatabase("Test"));
+                services.AddDbContext<IReadOnlyDbContext, AppDbContext>(builder =>
+                    builder.UseInMemoryDatabase("Test"));
+            }
+            else
+            {
+                services.AddDbContext<IDbContext, AppDbContext>(builder =>
+                    builder.UseSqlServer(Configuration.GetConnectionString("Database")));
+                services.AddDbContext<IReadOnlyDbContext, ReadOnlyAppDbContext>(builder =>
+                    builder.UseSqlServer(Configuration.GetConnectionString("Database")));
+
+            }
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<CheckOrderFilterAttribute>();
         }

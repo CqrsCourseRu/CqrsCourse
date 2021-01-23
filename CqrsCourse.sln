@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQ.ApplicationServices.Impl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQ.WebApi", "CommandQueries\WebApi\CQ.WebApi.csproj", "{C7906327-679A-4844-BE37-27FD4C0ED65E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Layers.Tests", "Layers\Tests\Layers.Tests.csproj", "{183D5748-085B-4BBD-8D88-D58E16BC8C4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{C7906327-679A-4844-BE37-27FD4C0ED65E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7906327-679A-4844-BE37-27FD4C0ED65E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7906327-679A-4844-BE37-27FD4C0ED65E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{183D5748-085B-4BBD-8D88-D58E16BC8C4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{183D5748-085B-4BBD-8D88-D58E16BC8C4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{183D5748-085B-4BBD-8D88-D58E16BC8C4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{183D5748-085B-4BBD-8D88-D58E16BC8C4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,6 +180,7 @@ Global
 		{E6FC1315-4883-4DAA-BAE3-78E3FFD5E358} = {8D379D7F-7773-44DD-A736-04A83816A783}
 		{8605281E-8692-48E7-B3AF-8E8CDBBCFF3E} = {8D379D7F-7773-44DD-A736-04A83816A783}
 		{C7906327-679A-4844-BE37-27FD4C0ED65E} = {8D379D7F-7773-44DD-A736-04A83816A783}
+		{183D5748-085B-4BBD-8D88-D58E16BC8C4C} = {B0269DAE-B0B4-4880-93C1-17246329C9CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {737C994D-88B7-45FA-BB37-85AC1852BFA5}
