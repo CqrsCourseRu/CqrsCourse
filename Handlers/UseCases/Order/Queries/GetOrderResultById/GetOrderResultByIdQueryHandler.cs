@@ -25,7 +25,7 @@ namespace Handlers.UseCases.Order.Queries.GetOrderResultById
 
         public async Task<Result<OrderDto>> HandleAsync(GetOrderResultByIdQuery request)
         {
-            var orderDto = await _dbContext.Set<Entities.Order>()
+            var orderDto = await _dbContext.Query<Entities.Order>()
                 .Where(x => x.Id == request.Id)
                 .ProjectTo<OrderDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();

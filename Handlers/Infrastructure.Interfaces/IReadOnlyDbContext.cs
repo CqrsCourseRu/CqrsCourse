@@ -1,13 +1,13 @@
-﻿using Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
+using Entities;
 
 namespace Infrastructure.Interfaces
 {
     public interface IReadOnlyDbContext
     {
-        DbSet<Order> Orders { get; }
-        DbSet<Product> Products { get; }
+        IQueryable<Order> Orders { get; }
+        IQueryable<Product> Products { get; }
 
-        DbSet<T> Set<T>() where T : Entity;
+        IQueryable<T> Query<T>() where T : Entity;
     }
 }

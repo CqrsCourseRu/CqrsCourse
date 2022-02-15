@@ -24,7 +24,7 @@ namespace Tests
             var services = new ServiceCollection();
             DIHelper.ConfigureServices(services);
 
-            services.AddDbContext<IReadOnlyDbContext, AppDbContext>(builder =>
+            services.AddDbContext<IReadOnlyDbContext, ReadOnlyAppDbContext>(builder =>
                 builder.UseInMemoryDatabase("Test"));
             services.AddDbContext<IDbContext, AppDbContext>(builder =>
                 builder.UseInMemoryDatabase("Test"));

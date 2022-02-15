@@ -29,7 +29,7 @@ namespace Handlers.UseCases.Common.Queries.GetEntityById
 
         public virtual async Task<TDto> HandleAsync(TRequest request)
         {
-            var result = await _dbContext.Set<TEntity>()
+            var result = await _dbContext.Query<TEntity>()
                 .Where(x => x.Id == request.Id)
                 .ProjectTo<TDto>(_mapper.ConfigurationProvider)
                 .SingleAsync();
